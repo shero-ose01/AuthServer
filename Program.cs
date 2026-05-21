@@ -35,10 +35,8 @@ builder.Services.AddRateLimiter(options =>
 });
 builder.Services.AddAuthorization(options =>
 {
-    options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();   
+    options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 });
-var jwtKey = builder.Configuration["Jwt:Key"];
-if(string.IsNullOrEmpty(jwtKey)) throw new Exception("Jwt:Key is not set");
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
@@ -61,7 +59,7 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();    
+    app.UseDeveloperExceptionPage();
 }
 else
 {
@@ -81,7 +79,7 @@ app.Use(async (ctx, next) =>
     ctx.Response.Headers["X-Content-Type-Options"] = "nosniff";
     ctx.Response.Headers["Referrer-Policy"] = "no-referrer";
     ctx.Response.Headers["X-Frame-Options"] = "DENY";
-    await next();   
+    await next();
 });
 
 app.UseRateLimiter();
